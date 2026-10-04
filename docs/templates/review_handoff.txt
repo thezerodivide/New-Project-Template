@@ -1,0 +1,14 @@
+PLAIN-TEXT REVIEW HANDOFF (no markdown links, no abbreviated hashes: the reviewer cannot open links)
+
+Review item: <step / decision / revision>, for the review folder <PROJECT>-Review
+Source commit named in MANIFEST.txt: <full commit hash>
+
+Candidate files (uncommitted; byte-identical to the checkout, verified by program):
+  <repo path>   <size> bytes   SHA-256 <complete 64-character hash>
+  <repo path>   <size> bytes   SHA-256 <complete 64-character hash>
+
+Evidence tier (Protocol section 10): <local/simulated tests | static review | live>. The reviewer has not run the tests unless it says so.
+What the reviewer should check: <the specific claims, assumptions and edge cases; what is verified, reasoned, unknown>
+Anything else found in the review folder: <stray files, or none>
+
+The reviewer's reply should echo, on a line starting REVIEW OF:, the exact HANDOFF header it reviewed, and give its technical review under "For Claude" and a plain-language explanation under "For <developer>".
