@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working in this repository. It is the working agreement loaded every session.
+This file provides guidance to Claude Code (claude.ai/code) when working in this repository. It is the working agreement loaded every session. Replace each `<PLACEHOLDER>` before the first story (the START_PROMPT does this with the developer), and delete this paragraph once done.
 
 ## Authoritative documents
 
@@ -18,11 +18,9 @@ The spec and the protocol govern every change made in this repo. Read them in fu
 
 ## What this is
 
-PTAutoLeveler is a MacroQuest Lua orchestrator for Project Triune (the RoF2 emu server) that walks a character through a user-configured, ordered list of leveling and AA phases. It handles phase selection, AA XP %, travel and DZ management, and hands combat, AA spending, item evolution and death recovery to existing scripts (TAC, PTAAPlanner, PTItemEvolver, PTDeathRecovery). v1.0 ships solo and duo (one killer plus one leveler) together; choosing routes, AA purchases, combat, item evolution logic and death recovery are out of scope. See [SPEC.md](SPEC.md) for the rest (a pre-method document, not yet re-approved under this method; see the ledger).
+<PROJECT NAME>: <one paragraph: what the system does, for whom, and the v1 scope and non-goals; link to SPEC.md for the rest.>
 
-Runtime: MacroQuest for Project Triune (https://github.com/macroquest/macroquest/releases/tag/rel-emu-rof2; docs https://docs.macroquest.org/).
-
-Running it: not yet built.
+Running it: <how to run it, once built; say "not yet built" until it is.>
 
 ## Development Protocol — core rules
 
@@ -93,7 +91,7 @@ The developer facilitates: one decision at a time, risk calls, enforcing the pro
 
 ## The secondary reviewer (delete this section and the next two if no secondary reviewer is used)
 
-**Format of the reviewer's replies.** The secondary reviewer is ChatGPT unless the developer states otherwise. Replies to design items come in two sections. **"For Claude"** is the technical review: evaluate it on its merits, push back where it is wrong, incomplete or conflicts with verified evidence, the spec, approved criteria or earlier decisions, and use only this section to decide whether an item has reviewer approval (a technical decision is recorded only as the paragraph below says). **"For Shane"** is a plain-language explanation for the developer: ignore it when updating decision logs, criteria, designs or plans unless the developer says otherwise. The reviewer is not an authority whose recommendations are accepted automatically. An approval closes the current item; a needed material change means approval is withheld, not approved with recommendations appended. A separate issue raised in a review is handled as its own later item. If more context is needed to judge an item, ask for it instead of guessing.
+**Format of the reviewer's replies.** The secondary reviewer is ChatGPT unless the developer states otherwise. Replies to design items come in two sections. **"For Claude"** is the technical review: evaluate it on its merits, push back where it is wrong, incomplete or conflicts with verified evidence, the spec, approved criteria or earlier decisions, and use only this section to decide whether an item has reviewer approval (a technical decision is recorded only as the paragraph below says). **"For <DEVELOPER>"** is a plain-language explanation for the developer: ignore it when updating decision logs, criteria, designs or plans unless the developer says otherwise. The reviewer is not an authority whose recommendations are accepted automatically. An approval closes the current item; a needed material change means approval is withheld, not approved with recommendations appended. A separate issue raised in a review is handled as its own later item. If more context is needed to judge an item, ask for it instead of guessing.
 
 **Reviewer refinements are proposals until agreed.** The reviewer has review authority and the authority to recommend changes. It does not decide that a requested refinement is now a requirement. A refinement, recommendation or "required change" from the reviewer, however it is worded, is a proposal until Claude has responded to it on its merits (agree, agree with a change, or push back, with evidence) and the developer has approved the outcome in their own words; only then is it recorded as a decision or requirement. A reviewer's "cleared", "technically approved" or "required" closes or withholds only the reviewer's own technical review; it is never the decision. When a review states something as required that Claude has not yet agreed, Claude's reply labels it as reviewer-proposed, not agreed, before answering it.
 
@@ -135,7 +133,7 @@ Anything that can only be checked in the real runtime is run by the developer. C
 
 ## Pre-commit review handoff (the secondary reviewer's exact-artifact process)
 
-The secondary reviewer reads only the review folder, a plain folder `PTAutoLeveler-Review` beside this checkout, with no `.git`. Links, pasted code and chat text are not reviewable artifacts. Before any review of uncommitted files (code, or docs the reviewer should see), do all of this, in this order, and do not tell the reviewer the handoff is ready until step 4 has passed.
+The secondary reviewer reads only the review folder, a plain folder `<PROJECT>-Review` beside this checkout, with no `.git`. Links, pasted code and chat text are not reviewable artifacts. Before any review of uncommitted files (code, or docs the reviewer should see), do all of this, in this order, and do not tell the reviewer the handoff is ready until step 4 has passed.
 
 1. **Copy the exact candidate files** into the review folder's `candidate/` under their repo-relative paths. Include uncommitted documentation edits that the review depends on. Leave `candidate/README.txt` alone.
 2. **List each file in the review folder's `MANIFEST.txt`** as a candidate entry: the full 64-character SHA-256, the repo path and the byte size, and update the manifest's classification line. Committed entries stay as they were.
@@ -167,12 +165,12 @@ The secondary reviewer reads only the review folder, a plain folder `PTAutoLevel
 - **Any other commit** (neither docs nor code, such as `.gitignore`, generated data or logs): ask first.
 - **Pushes:** governed by the repository durability policy below. (Delete the policy only if the repository has no remote; say so here. A private repository that has a remote keeps it, because the safety scan still protects the off-machine copy.)
 
-**Repository durability policy.** A push to `origin/main` happens only when both gates pass, evaluated over every commit in the range being pushed (`origin/main..HEAD`), not only the newest.
+**Repository durability policy.** A push to `origin/<main branch>` happens only when both gates pass, evaluated over every commit in the range being pushed (`origin/<main>..HEAD`), not only the newest.
 
 1. **Authorization Gate.** Every commit in the range is authorized to be pushed. A docs-only commit is authorized by the standing permission in this file. A code commit is authorized by the developer's explicit permission for that commit, which includes its push. Any other commit is authorized only by the developer's explicit permission. A commit made under an earlier rule without push permission is not authorized until the developer says so.
-2. **Safety Gate.** The pre-push scan finds nothing concerning: tracked and staged text checked for the personal Windows folder, email addresses and token-like strings; each new file checked as expected; generated per-machine files confirmed git-ignored. If Claude is unsure about anything, the Safety Gate has not passed. The scan covers the whole range about to be pushed, not only the newest commit or the unstaged edits. Scan the pattern `C:.{0,3}Users.{0,3}legal[^ ]{0,30}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}|[A-Za-z0-9+/_-]{40,}` (adapt the first alternative to the platform's home-folder form if it is not Windows) over the added lines of: `git diff -U0 origin/main..HEAD` (the commits to be pushed); `git diff -U0 HEAD` (staged and unstaged edits, before committing); and, for the first push, when `origin/main` does not exist yet, `git log -p -U0 HEAD`. For example: `git diff -U0 origin/main..HEAD | grep '^+' | grep -o -i -E "<pattern>"`. `grep` exits with status 1 when it finds nothing, so an empty result is a pass, not a failure. Heading anchors and SHA-256 values are expected hits.
+2. **Safety Gate.** The pre-push scan finds nothing concerning: tracked and staged text checked for the personal Windows folder, email addresses and token-like strings; each new file checked as expected; generated per-machine files confirmed git-ignored. If Claude is unsure about anything, the Safety Gate has not passed. The scan covers the whole range about to be pushed, not only the newest commit or the unstaged edits. Scan the pattern `C:.{0,3}Users.{0,3}<USER>[^ ]{0,30}|[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[a-z]{2,}|[A-Za-z0-9+/_-]{40,}` (adapt the first alternative to the platform's home-folder form if it is not Windows) over the added lines of: `git diff -U0 origin/<main branch>..HEAD` (the commits to be pushed); `git diff -U0 HEAD` (staged and unstaged edits, before committing); and, for the first push, when `origin/<main branch>` does not exist yet, `git log -p -U0 HEAD`. For example: `git diff -U0 origin/<main branch>..HEAD | grep '^+' | grep -o -i -E "<pattern>"`. `grep` exits with status 1 when it finds nothing, so an empty result is a pass, not a failure. Heading anchors and SHA-256 values are expected hits.
 3. **Neither gate substitutes for the other.** Passing the scan does not grant permission to push, and permission does not override a scan finding or Claude's doubt. If either gate fails, Claude stops before pushing, says which gate failed and why, and asks. Only the developer can clear a finding, explicitly.
-4. Push only to `origin/main`; never force push; no new branches or tags without permission; if a push is rejected or fails, stop and report.
+4. Push only to `origin/<main branch>`; never force push; no new branches or tags without permission; if a push is rejected or fails, stop and report.
 5. After every push, report the range pushed and the result of both gates.
 
 If the repository is public: every push is world-readable and cannot be undone cleanly.
@@ -181,27 +179,16 @@ If the repository is public: every push is world-readable and cannot be undone c
 
 Other projects by this developer on the same platform, checked for prior art before designing a new mechanism. Add to this list as related projects come up; if nothing here matches what is being designed, ask whether something similar has been solved before.
 
-All on https://github.com/thezerodivide, all Project Triune / MacroQuest, all the developer's own except TAC (not the developer's; a dependency, so read its source per §4).
-
-- **PTAutoRoute** — route recording and travel. Prior art for module layout and the pure-logic-plus-MQ-adapter pattern; the test *strategy* only is borrowed here (see Testing).
-- **PTDeathRecovery** — death recovery; the verified `/ac status` query-guard pattern for talking to TAC.
-- **PTAAPlanner** — AA planning and automatic purchasing (uses ProjectTriuneMQ2AASpend).
-- **ProjectTriuneMQ2AASpend** — Project Triune compatibility build of MQ2AASpend.
-- **PTItemEvolver** — item evolution queue management.
-- **AutoInvAutoDZAdd** — group invites and DZ membership by tell; possible prior art for DZ handling.
-- **SpellSpree** — spell buying and scribing; originally written by @Heeby, taken over by the developer with permission.
-- **MQClaudeTestBridge** — where this method was developed.
+- <none yet>
 
 ## Tooling notes
 
-- Windows 11; LuaJIT 2.1 (`luajit`) and Python 3.14 are on PATH (checked 2026-10-04). Lua is not installed as `lua`.
-- File schema (Protocol §8), decided 2026-10-04: config in `macroquest/config/PTAutoLeveler/`, logs in `macroquest/logs/PTAutoLeveler/`, log files named `PTAL_<server>_<character>.log` (developer: "PTAL is the log prefix I want"). Layout, line format and rotation follow PTAutoRoute's convention as a starting point; the line format and rotation are an implementation choice, not yet a decision.
-- Build identity (§9): one version module is the single source of the version string for window titles and log lines.
+<Project-specific quirks that bit before, for example shell and line-ending behavior on this machine, how to run one test file, where saved helper scripts live. Start empty; add as they are found.>
 
 ## Architecture
 
-Not yet built. The designed shape (a state machine driven by one Evaluate loop; one code path for solo and duo; MQ calls confined to an adapter) is in [SPEC.md](SPEC.md) and is not yet approved under this method. Keep this section in step with the code (Development Protocol §18).
+<Not yet built. Describe the designed shape in one paragraph and link SPEC.md; keep this section in step with the code (Development Protocol §18).>
 
 ## Testing
 
-Not yet built. Intended, not yet approved as a decision: one command, `test\check.cmd`, runs a syntax check and then all tests under `luajit`, exiting 0 only if all pass; tests live in `test/` as `*_test.lua`; each test cites its requirement source (DL entry, SPEC section or real log line); deterministic logic is separated from the MQ adapter where that gives real testability (§20). The harness is written fresh for this project, test-first; only PTAutoRoute's testing *strategy* is borrowed (developer: "I'd rather just reuse the strategy"). See test/README.md for the test-first workflow.
+<The one command that runs everything and exits 0 only if all of it passes, the test layout, and where each test's requirement source is cited. See test/README.md, which also holds the test-first workflow. Apply §20: separate deterministic logic from the runtime-bound adapter.>
